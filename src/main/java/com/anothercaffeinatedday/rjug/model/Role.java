@@ -15,28 +15,22 @@
  */
 package com.anothercaffeinatedday.rjug.model;
 
+import java.io.Serializable;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 /**
  *
  * @author tstone
  */
-public class Role {
 
-    private Integer id;
+@Entity
+@Table(name="\"role\"")
+public class Role extends ModelBase {
+    
+    @OneToMany(mappedBy="role")
     private String rolename;
-
-    /**
-     * @return the id
-     */
-    public Integer getId() {
-        return id;
-    }
-
-    /**
-     * @param id the id to set
-     */
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     /**
      * @return the rolename
@@ -54,8 +48,8 @@ public class Role {
 
     public enum Roles {
         GUI("manager-gui", 0),
-        Script("manager-script", 1),
-        Status("manager-status", 2),
+        SCRIPT("manager-script", 1),
+        STATUS("manager-status", 2),
         JMX("manager-jmx", 3);
         
         private String rolename;

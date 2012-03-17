@@ -16,12 +16,13 @@
 package com.anothercaffeinatedday.rjug.dao;
 
 import com.anothercaffeinatedday.rjug.model.User;
+import com.anothercaffeinatedday.rjug.model.UsersRoles;
 
 /**
  *
  * @author tstone
  * @author fdaoud
  */
-public interface UserDao extends Dao<User,Integer> {
-    public User findByUsername(String username);
+public interface UsersRolesDao extends Dao<UsersRoles,Integer> {
+    public User[] findByUserame(String username);
 }

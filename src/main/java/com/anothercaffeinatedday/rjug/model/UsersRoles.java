@@ -15,14 +15,48 @@
  */
 package com.anothercaffeinatedday.rjug.model;
 
+import java.io.Serializable;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+
 /**
  *
  * @author tstone
  */
-public class UsersRoles {
+
+@Entity
+public class UsersRoles extends ModelBase {
     
+    @ManyToOne
     private String username;
+    @ManyToOne
     private String rolename;
-    
-    
+
+    /**
+     * @return the username
+     */
+    public String getUsername() {
+        return username;
+    }
+
+    /**
+     * @param username the username to set
+     */
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    /**
+     * @return the rolename
+     */
+    public String getRolename() {
+        return rolename;
+    }
+
+    /**
+     * @param rolename the rolename to set
+     */
+    public void setRolename(String rolename) {
+        this.rolename = rolename;
+    }
 }

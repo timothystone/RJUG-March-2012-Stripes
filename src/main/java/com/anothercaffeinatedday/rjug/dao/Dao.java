@@ -15,13 +15,18 @@
  */
 package com.anothercaffeinatedday.rjug.dao;
 
-import com.anothercaffeinatedday.rjug.model.User;
+import java.io.Serializable;
+import java.util.List;
 
 /**
  *
  * @author tstone
  * @author fdaoud
  */
-public interface UserDao extends Dao<User,Integer> {
-    public User findByUsername(String username);
+public interface Dao<T,ID extends Serializable> {
+    public List<T> read();
+    public T read(ID id);
+    public void save(T t);
+    public void delete(T t);
+    public void commit();
 }

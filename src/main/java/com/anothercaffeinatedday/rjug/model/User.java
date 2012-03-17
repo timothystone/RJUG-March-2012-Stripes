@@ -18,16 +18,21 @@ package com.anothercaffeinatedday.rjug.model;
 import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
  *
  * @author tstone
  */
+
 @Entity
-public class User extends ModelBase implements Serializable {
+@Table(name="\"user\"")
+public class User extends ModelBase {
 
     private String fname;
     private String lname;
+    @OneToMany(mappedBy="user")
     private String username;
     private String password;
     private String email;
