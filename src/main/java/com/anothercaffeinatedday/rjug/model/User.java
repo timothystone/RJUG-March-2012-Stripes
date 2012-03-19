@@ -15,10 +15,7 @@
  */
 package com.anothercaffeinatedday.rjug.model;
 
-import java.io.Serializable;
-import java.util.Set;
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -124,19 +121,5 @@ public class User extends ModelBase {
     @Override
     public String toString() {
         return String.format("%s %s", fname, lname);
-    }
-
-    /**
-     * @return the roles
-     */
-    public Set getRoles() {
-        return roles;
-    }
-
-    /**
-     * @param roles the roles to set
-     */
-    public void setRoles(Set roles) {
-        this.roles = roles;
     }
 }

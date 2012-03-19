@@ -15,7 +15,6 @@
  */
 package com.anothercaffeinatedday.rjug.model;
 
-import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
@@ -27,9 +26,7 @@ import javax.persistence.ManyToOne;
 @Entity
 public class UserRoles extends ModelBase {
     
-    @ManyToOne
     private String username;
-    @ManyToOne
     private String rolename;
 
     /**
