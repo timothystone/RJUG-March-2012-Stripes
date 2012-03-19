@@ -32,13 +32,10 @@ public class User extends ModelBase {
 
     private String fname;
     private String lname;
-    @OneToMany(mappedBy="user")
     private String username;
     private String password;
     private String email;
     private String phone;
-    
-    private Set roles;
 
     /**
      * @return the fname

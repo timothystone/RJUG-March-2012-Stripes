@@ -17,8 +17,7 @@ package com.anothercaffeinatedday.rjug.model;
 
 import java.io.Serializable;
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.ManyToOne;
 
 /**
  *
@@ -26,11 +25,26 @@ import javax.persistence.Table;
  */
 
 @Entity
-@Table(name="\"role\"")
-public class Role extends ModelBase {
+public class UserRoles extends ModelBase {
     
-    @OneToMany(mappedBy="role")
+    @ManyToOne
+    private String username;
+    @ManyToOne
     private String rolename;
+
+    /**
+     * @return the username
+     */
+    public String getUsername() {
+        return username;
+    }
+
+    /**
+     * @param username the username to set
+     */
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     /**
      * @return the rolename
@@ -45,27 +59,4 @@ public class Role extends ModelBase {
     public void setRolename(String rolename) {
         this.rolename = rolename;
     }
-
-    public enum Roles {
-        GUI("manager-gui", 0),
-        SCRIPT("manager-script", 1),
-        STATUS("manager-status", 2),
-        JMX("manager-jmx", 3);
-        
-        private String rolename;
-        private Integer id;
-
-        Roles(String rolename, Integer id) {
-            this.rolename = rolename;
-            this.id = id;
-        }
-        
-        public String getRolename() {
-            return rolename;
-        }
-        
-        public Integer getId() {
-            return id;
-        }
-    };
 }
