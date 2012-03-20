@@ -31,12 +31,12 @@ import net.sourceforge.stripes.validation.ValidationMethod;
 public class HomeActionBean extends BaseActionBean {
 
     @ValidateNestedProperties({
-      @Validate(field="fname", required=true, on="save", maxlength=32),
-      @Validate(field="lname", required=true, on="save", maxlength=32),
-      @Validate(field="email", required=true, on="save", converter=EmailTypeConverter.class),
-      @Validate(field="username", required=true, on="save", maxlength=16),
-      @Validate(field="password", required=true, on="save", minlength=6, maxlength=32),
-      @Validate(field="phone", maxlength=16)         
+        @Validate(field = "fname", required = true, on = "save", maxlength = 32),
+        @Validate(field = "lname", required = true, on = "save", maxlength = 32),
+        @Validate(field = "email", required = true, on = "save", converter = EmailTypeConverter.class),
+        @Validate(field = "username", required = true, on = "save", maxlength = 16),
+        @Validate(field = "password", required = true, on = "save", minlength = 6, maxlength = 32),
+        @Validate(field = "phone", maxlength = 16)
     })
     private User user;
     private UserRoles userRoles;
@@ -59,26 +59,28 @@ public class HomeActionBean extends BaseActionBean {
         System.out.println("saving...");
         userRoles = getUserRoles();
         userRoles.setUsername(user.getUsername());
+        userRoles.setRolename(remap(userRoles.getRolename()));
         userDao.save(user);
         userRolesDao.save(userRoles);
         userDao.commit();
+        userRolesDao.commit();
         getContext().getMessages().add(
                 new SimpleMessage("{0} has been saved.", user));
         return new RedirectResolution(HomeActionBean.class);
     }
-    
+
     @DontValidate
     public Resolution cancel() {
         return new RedirectResolution(HomeActionBean.class);
-    }    
-    
+    }
+
     public User getUser() {
-        if(id != null) {
+        if (id != null) {
             return userDao.read(id);
         }
         return this.user;
     }
-    
+
     public void setUser(User user) {
         this.user = user;
     }
@@ -86,15 +88,15 @@ public class HomeActionBean extends BaseActionBean {
     public UserRoles getUserRoles() {
         return this.userRoles;
     }
-    
+
     public void setUserRoles(UserRoles userRoles) {
         this.userRoles = userRoles;
     }
-    
+
     public Integer getId() {
         return this.id;
     }
-    
+
     public void setId(Integer id) {
         this.id = id;
     }
@@ -102,26 +104,40 @@ public class HomeActionBean extends BaseActionBean {
     public List<User> getUsers() {
         return userDao.read();
     }
-    
-    @ValidationMethod(on="save")
+
+    private String remap(String s) {
+        if ("GUI".equals(s)) {
+            return "manager-gui";
+        } else if ("JMX".equals(s)) {
+            return "manager-jmx";
+        } else if ("SCRIPT".equals(s)) {
+            return "manager-script";
+        } else if ("STATUS".equals(s)) {
+            return "manager-status";
+        } else {
+            return s;
+        }
+    }
+
+    @ValidationMethod(on = "save")
     public void validateUniqueUsername(ValidationErrors errors) {
-         String username = user.getUsername();
+        String username = user.getUsername();
         if (userDao.findByUsername(username) != null) {
             errors.add("user.username",
-              new SimpleError("{1} is already in use.", username));
-        }    
+                    new SimpleError("{1} is already in use.", username));
+        }
     }
-    
-    @ValidationMethod(on="save")
+
+    @ValidationMethod(on = "save")
     public void validateFirstAndLastName(ValidationErrors errors) {
-        String fname = user.getFname(), lname= user.getLname();
+        String fname = user.getFname(), lname = user.getLname();
         if ("First Name".equals(fname)) {
             errors.add("user.fname",
-              new SimpleError("Please enter a first, or given, name."));
-        }    
+                    new SimpleError("Please enter a first, or given, name."));
+        }
         if ("Last Name".equals(lname)) {
             errors.add("user.lname",
-              new SimpleError("Please enter a lastname (or surname)."));
+                    new SimpleError("Please enter a lastname (or surname)."));
         }
     }
 }

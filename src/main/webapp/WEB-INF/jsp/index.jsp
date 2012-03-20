@@ -209,7 +209,7 @@
                         <dl>
                             <dt>Role</dt>
                             <dd>
-                                <s:select name="userroles.rolename">
+                                <s:select name="userRoles.rolename">
                                     <s:options-enumeration enum="com.anothercaffeinatedday.rjug.model.UserRoles.Roles" label="roleName" />
                                 </s:select>
                             </dd>
@@ -237,7 +237,7 @@
                                 <td>${user.username}</td>
                                 <td>${user.email}</td>
                                 <td>${user.phone}</td>
-                                <td></td>
+                                <td>${userRoles.rolename}</td>
                                 <td><s:link event="update" beanclass="com.anothercaffeinatedday.rjug.action.HomeActionBean" class="update">
                                         <s:param name="id" value="${user.id}"/>Update</s:link> | <s:link event="delete" beanclass="com.anothercaffeinatedday.rjug.action.HomeActionBean" class="confirm"><s:param name="id" value="${user.id}"/>Delete</s:link></td>
                                 </tr>                            
