@@ -19,43 +19,43 @@
 <s:layout-render name="/WEB-INF/jsp/layout.jsp" title="Tomcat Manager Management">
     <s:layout-component name="bd">
             <div id="updatePanel">
-                <form>
-                    <input type="hidden" name="contact.id">
+                <s:form beanclass="${actionBean['class']}">
+                    <div><s:hidden name="user" /></div>
                     <div class="hd">
-                        <h1>Update [Full Name]</h1>
+                        <h1>Update ${actionBean.user.fname} ${actionBean.user.lname}</h1>
                     </div>
                     <div class="bd">
                         <dl>
                             <dt>Name</dt>
                             <dd>
-                                <input type="text" value="First">
+                                <s:text name="user.fname"/>
                             </dd>
                             <dd>
-                                <input type="text" value="Last">
+                                <s:text name="user.lname"/>
                             </dd>
                         </dl>
                         <dl>
                             <dt>Username</dt>
                             <dd>
-                                [username]
+                                ${actionBean.user.username}
                             </dd>
                         </dl>
                         <dl>
                             <dt>Password</dt>
                             <dd>
-                                <input type="text">
+                                <s:password name="user.password" value="${actionBean.user.password}"/>
                             </dd>
                         </dl>
                         <dl>
                             <dt>e-mail</dt>
                             <dd>
-                                <input type="text">
+                                <s:text name="user.email" value="${actionBean.user.email}"/>
                             </dd>
                         </dl>
                         <dl>
                             <dt>Phone</dt>
                             <dd>
-                                <input type="text">
+                                <s:text name="user.phone" value="${actionBean.user.phone}"/>
                             </dd>
                         </dl>
                         <dl>
@@ -71,9 +71,9 @@
                         </dl>
                     </div>
                     <div class="ft">
-                        <input type="submit">                    
+                        <s:submit name="save" value="Update User" />                    
                     </div>
-                </form>
+                </s:form>
             </div>
     </s:layout-component>            
 </s:layout-render>

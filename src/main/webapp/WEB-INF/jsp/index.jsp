@@ -90,6 +90,7 @@
                                 <s:text name="user.lname" value="Last Name" />
                             </dd>
                         </dl>
+                        <c:if test="${s:hasErrors(actionBean,'user.fname') or s:hasErrors(actionBean,'user.lname')}">
                         <dl>
                             <dt>&nbsp;</dt>
                             <dd>
@@ -99,24 +100,49 @@
                                 <s:errors field="user.lname" />
                             </dd>
                         </dl>
+                        </c:if>
                         <dl>
                             <dt>Username</dt>
                             <dd>
                                 <s:text name="user.username" />
                             </dd>
                         </dl>
+                        <c:if test="${s:hasErrors(actionBean,'user.username')}">
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dd>
+                                <s:errors field="user.username" />
+                            </dd>
+                        </dl>
+                        </c:if>
                         <dl>
                             <dt>Password</dt>
                             <dd>
                                 <s:password name="user.password" />
                             </dd>
                         </dl>
+                        <c:if test="${s:hasErrors(actionBean,'user.password')}">
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dd>
+                                <s:errors field="user.password" />
+                            </dd>
+                        </dl>
+                        </c:if>
                         <dl>
                             <dt>e-mail</dt>
                             <dd>
                                 <s:text name="user.email" />
                             </dd>
                         </dl>
+                        <c:if test="${s:hasErrors(actionBean,'user.email')}">
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dd>
+                                <s:errors field="user.email" />
+                            </dd>
+                        </dl>
+                        </c:if>
                         <dl>
                             <dt>Phone</dt>
                             <dd>
@@ -159,7 +185,7 @@
                             <td>${user.phone}</td>
                             <td></td>
                             <td><s:link event="update" beanclass="com.anothercaffeinatedday.rjug.action.HomeActionBean">
-                                    <s:param name="user.id"/>Update</s:link> | <s:link event="delete" beanclass="com.anothercaffeinatedday.rjug.action.HomeActionBean" class="confirm" data-fullname="${fullname}" data-username="${user.username}"><s:param name="user.id"/>Delete</s:link></td>
+                                    <s:param name="id" value="${user.id}"/>Update</s:link> | <s:link event="delete" beanclass="com.anothercaffeinatedday.rjug.action.HomeActionBean" class="confirm" data-fullname="${fullname}" data-username="${user.username}"><s:param name="user.id"/>Delete</s:link></td>
                         </tr>                            
                         </c:forEach>
                         

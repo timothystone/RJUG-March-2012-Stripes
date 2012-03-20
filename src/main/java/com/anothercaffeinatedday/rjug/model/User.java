@@ -15,6 +15,7 @@
  */
 package com.anothercaffeinatedday.rjug.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -27,11 +28,17 @@ import javax.persistence.Table;
 @Table(name="\"user\"")
 public class User extends ModelBase {
 
+    @Column(name="fname", nullable=false, length=32)
     private String fname;
+    @Column(name="lname", nullable=false, length=32)
     private String lname;
+    @Column(name="username", nullable=false, length=16)
     private String username;
+    @Column(name="password", nullable=false, length=32)
     private String password;
+    @Column(name="email", nullable=false, length=64)
     private String email;
+    @Column(name="phone", nullable=true, length=16)
     private String phone;
     
     /**

@@ -39,6 +39,8 @@ public class HomeActionBean extends BaseActionBean {
       @Validate(field="phone", maxlength=16)         
     })
     private User user;
+    
+    private Integer id;
 
     @DefaultHandler
     public Resolution view() {
@@ -54,8 +56,8 @@ public class HomeActionBean extends BaseActionBean {
     }
 
     public Resolution save() {
-        userDao.save(user);
-        
+        System.out.println("saving...");
+        userDao.save(user);        
         userDao.commit();
         getContext().getMessages().add(
                 new SimpleMessage("{0} has been saved.", user));
@@ -69,11 +71,22 @@ public class HomeActionBean extends BaseActionBean {
     }    
     
     public User getUser() {
+        if(id != null) {
+            return userDao.read(id);
+        }
         return this.user;
     }
     
     public void setUser(User user) {
         this.user = user;
+    }
+    
+    public Integer getId() {
+        return this.id;
+    }
+    
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public List<User> getUsers() {
@@ -99,5 +112,6 @@ public class HomeActionBean extends BaseActionBean {
         if ("Last Name".equals(lname)) {
             errors.add("user.lname",
               new SimpleError("Please enter a lastname (or surname)."));
-        }     }
+        }
+    }
 }
