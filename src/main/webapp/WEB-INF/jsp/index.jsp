@@ -68,7 +68,7 @@
             </ul>
             <div class="yui-content">
                 <s:form beanclass="${actionBean['class']}">
-                    <div style="display:none"><s:hidden name="user" /></div>
+                    <div><s:hidden name="user" /></div>
                     <div>
                         <h1>Create New User</h1>
                         <dl>

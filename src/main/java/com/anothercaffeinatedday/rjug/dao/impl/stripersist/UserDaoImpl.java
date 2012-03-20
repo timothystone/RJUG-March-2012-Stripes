@@ -11,12 +11,11 @@ import com.anothercaffeinatedday.rjug.model.User;
  *
  * @author tstone
  */
-public class UserDaoImpl extends BaseDaoImpl<User,Integer>
-    implements UserDao {
+public class UserDaoImpl extends BaseDaoImpl<User, Integer>
+        implements UserDao {
 
     @Override
-    public User findByUsername(String username, User user) {
-        return findBy("username",username,user);
+    public User findByUsername(String username) {
+        return findBy("username", username);
     }
-    
 }

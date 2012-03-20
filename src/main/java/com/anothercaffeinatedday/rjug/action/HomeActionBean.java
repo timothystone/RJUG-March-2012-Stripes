@@ -47,18 +47,18 @@ public class HomeActionBean extends BaseActionBean {
         return new RedirectResolution(HomeActionBean.class);
     }
     
-    private User getUser() {
-        return this.user;
-    }
-    
-    private void setUser(User user) {
-        this.user = user;
-    }
-
     public Resolution cancel() {
         getContext().getMessages().add(
                 new SimpleMessage("Action cancelled."));
         return new RedirectResolution(HomeActionBean.class);
+    }    
+    
+    public User getUser() {
+        return this.user;
+    }
+    
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public List<User> getUsers() {
