@@ -22,41 +22,29 @@
                 users = 0;    
                 var deletes = Dom.getElementsByClassName("confirm");
                 var updates = Dom.getElementsByClassName("update");
-                var deleteModal = new SimpleDialog("cDelete", { 
-                    width: "30em", 
-                    fixedcenter: true,
-                    modal: true,
-                    visible: false,
-                    draggable: false
-                });
-                deleteModal.setHeader("Delete [User Full Name]");
-                deleteModal.setBody("Are you sure you want to delete the user '[username]'?");
-                deleteModal.cfg.setProperty("icon", SimpleDialog.ICON_WARN);
             
-                var handleYes = function() {
+                var deleteYes = function() {
                     //user confirms the deletion of this item;
                     //this method would perform that deletion;
                     this.hide();
                 };
-                var handleNo = function() {
+                var deleteNo = function() {
                     //user cancels item deletion; this method
                     //would handle the cancellation of the
                     //process.
                     this.hide();
                 };
                 var deleteButtons = [
-                    { text: "Yes", handler: handleYes },
-                    { text:"Cancel", handler: handleNo, isDefault:true}
-                ];
-            
-                deleteModal.cfg.queueProperty("buttons", deleteButtons); 
-                deleteModal.render(document.body);            
+                    { text: "Delete User", handler: deleteYes },
+                    { text:"Cancel", handler: deleteNo, isDefault:true}
+                ];         
             
                 var updateYes = function() {
                     //user confirms the deletion of this item;
                     //this method would perform that deletion;
                     this.hide();
                 };
+                
                 var updateNo = function() {
                     //user cancels item deletion; this method
                     //would handle the cancellation of the
@@ -69,13 +57,35 @@
                     { text:"Cancel", handler: updateNo, isDefault:true}
                 ];
             
-                
+                var deletepanel = {
+                    cache: false,
+                    success: function(o) {
+                        var tempDiv = document.createElement("div");
+                        tempDiv.innerHTML = o.responseText;
+                        var deleteDialog = new YAHOO.widget.Dialog(getHtmlById(tempDiv,"deleteForm","form"),{
+                            width: "40em", 
+                            fixedcenter: true,
+                            modal: true,
+                            visible: false,
+                            draggable: false,
+                            underlay: "none"
+                            
+                        });
+                        deleteDialog.cfg.queueProperty("buttons",deleteButtons); 
+                        deleteDialog.render(document.body);
+                        deleteDialog.show();
+                    },
+                    failure: function(o) {
+                        alert("failed to make connection");
+                    }
+                };
+
                 Event.on(deletes, "click", function(e) {
                     Event.preventDefault(e);
-                    deleteModal.show();
+                    var xhr = Connect.asyncRequest('GET',this.href,deletepanel);
                 });
                 
-                var loadpanel = {
+                var updatepanel = {
                     cache: false,
                     success: function(o) {
                         var tempDiv = document.createElement("div");
@@ -100,7 +110,7 @@
                 
                 Event.on(updates, "click", function(e) {
                     Event.preventDefault(e);
-                    var xhr = Connect.asyncRequest('GET',this.href,loadpanel);
+                    var xhr = Connect.asyncRequest('GET',this.href,updatepanel);
                 });
                 
                 users = ${fn:length(actionBean.users)};
@@ -199,12 +209,9 @@
                         <dl>
                             <dt>Role</dt>
                             <dd>
-                                <select name="role">
-                                    <option value="0">manager-script</option>
-                                    <option value="1">manager-status</option>
-                                    <option value="2">manager-gui</option>
-                                    <option value="3">manager-jmx</option>
-                                </select>
+                                <s:select name="userroles.rolename">
+                                    <s:options-enumeration enum="com.anothercaffeinatedday.rjug.model.UserRoles.Roles" label="roleName" />
+                                </s:select>
                             </dd>
                         </dl>
                         <dl>
@@ -226,13 +233,13 @@
                         <c:forEach items="${actionBean.users}" var="user">
                             <c:set var="fullname" value="${user.fname} ${user.lname}" />
                             <tr>
-                                <td>${fullname}</td><!-- name -->
-                                <td>${user.username}</td><!-- username -->
-                                <td>${user.email}</td><!-- email -->
-                                <td>${user.phone}</td><!-- phone -->
-                                <td></td><!-- role -->
+                                <td>${fullname}</td>
+                                <td>${user.username}</td>
+                                <td>${user.email}</td>
+                                <td>${user.phone}</td>
+                                <td></td>
                                 <td><s:link event="update" beanclass="com.anothercaffeinatedday.rjug.action.HomeActionBean" class="update">
-                                        <s:param name="id" value="${user.id}"/>Update</s:link> | <s:link event="delete" beanclass="com.anothercaffeinatedday.rjug.action.HomeActionBean" class="confirm" data-fullname="${fullname}" data-username="${user.username}"><s:param name="user.id" value="${user.id}"/>Delete</s:link></td>
+                                        <s:param name="id" value="${user.id}"/>Update</s:link> | <s:link event="delete" beanclass="com.anothercaffeinatedday.rjug.action.HomeActionBean" class="confirm"><s:param name="id" value="${user.id}"/>Delete</s:link></td>
                                 </tr>                            
                         </c:forEach>
 
@@ -249,57 +256,46 @@
                             <th>Role</th>
                             <th>Actions</th>
                         </tr>
-                        <tr>
-                            <td>Jon Doe</td>
-                            <td>804.255.1212</td>
-                            <td>jdoe@manager.org</td>
-                            <td>jdoe</td>
-                            <td>manager-script</td>
-                            <td><s:link event="update" beanclass="com.anothercaffeinatedday.rjug.action.HomeActionBean" class="update">
-                                    <s:param name="id" value="${user.id}"/>Update</s:link></td>
-                            </tr>
+                        <c:forEach items="${actionBean.users}" var="user">
+                            <c:set var="fullname" value="${user.fname} ${user.lname}" />
                             <tr>
-                                <td>Jane Doe</td>
-                                <td>804.255.1212</td>
-                                <td>janedoe@manager.org</td>
-                                <td>janedoe</td>
-                                <td>manager-gui</td>
+                                <td>${fullname}</td>
+                                <td>${user.username}</td>
+                                <td>${user.email}</td>
+                                <td>${user.phone}</td>
+                                <td></td>
                                 <td><s:link event="update" beanclass="com.anothercaffeinatedday.rjug.action.HomeActionBean" class="update">
-                                    <s:param name="id" value="${user.id}"/>Update</s:link></td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div>
-                        <h1>Delete Users</h1>
-                        <table id="users-delete">
+                                        <s:param name="id" value="${user.id}"/>Update</s:link></td>
+                                </tr>                            
+                        </c:forEach>
+                    </table>
+                </div>
+                <div>
+                    <h1>Delete Users</h1>
+                    <table id="users-delete">
+                        <tr>
+                            <th>Name</th>
+                            <th>Phone</th>
+                            <th>Email</th>
+                            <th>Username</th>
+                            <th>Role</th>
+                            <th>Actions</th>
+                        </tr>
+                        <c:forEach items="${actionBean.users}" var="user">
+                            <c:set var="fullname" value="${user.fname} ${user.lname}" />
                             <tr>
-                                <th>Name</th>
-                                <th>Phone</th>
-                                <th>Email</th>
-                                <th>Username</th>
-                                <th>Role</th>
-                                <th>Actions</th>
-                            </tr>
-                            <tr>
-                                <td>Jon Doe</td>
-                                <td>804.255.1212</td>
-                                <td>jdoe@manager.org</td>
-                                <td>jdoe</td>
-                                <td>manager-script</td>
-                                <td><s:link event="delete" beanclass="com.anothercaffeinatedday.rjug.action.HomeActionBean" class="confirm" data-fullname="${fullname}" data-username="${user.username}"><s:param name="user.id" value="${user.id}"/>Delete</s:link></td>
-                            </tr>
-                            <tr>
-                                <td>Jane Doe</td>
-                                <td>804.255.1212</td>
-                                <td>janedoe@manager.org</td>
-                                <td>janedoe</td>
-                                <td>manager-gui</td>
-                                <td><s:link event="delete" beanclass="com.anothercaffeinatedday.rjug.action.HomeActionBean" class="confirm" data-fullname="${fullname}" data-username="${user.username}"><s:param name="user.id" value="${user.id}"/>Delete</s:link></td>
-                            </tr>
-                        </table>
-                    </div>
+                                <td>${fullname}</td>
+                                <td>${user.username}</td>
+                                <td>${user.email}</td>
+                                <td>${user.phone}</td>
+                                <td></td>
+                                <td><s:link event="delete" beanclass="com.anothercaffeinatedday.rjug.action.HomeActionBean" class="delete"><s:param name="id" value="${user.id}"/>Delete</s:link></td>
+                                </tr>                            
+                        </c:forEach>
+                    </table>
                 </div>
             </div>
+        </div>
     </s:layout-component>
 </s:layout-render>
 

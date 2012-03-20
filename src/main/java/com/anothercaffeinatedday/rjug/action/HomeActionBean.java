@@ -39,7 +39,7 @@ public class HomeActionBean extends BaseActionBean {
       @Validate(field="phone", maxlength=16)         
     })
     private User user;
-    
+    private UserRoles userRoles;
     private Integer id;
 
     @DefaultHandler
@@ -57,16 +57,18 @@ public class HomeActionBean extends BaseActionBean {
 
     public Resolution save() {
         System.out.println("saving...");
-        userDao.save(user);        
+        userRoles = getUserRoles();
+        userRoles.setUsername(user.getUsername());
+        userDao.save(user);
+        userRolesDao.save(userRoles);
         userDao.commit();
         getContext().getMessages().add(
                 new SimpleMessage("{0} has been saved.", user));
         return new RedirectResolution(HomeActionBean.class);
     }
     
+    @DontValidate
     public Resolution cancel() {
-        getContext().getMessages().add(
-                new SimpleMessage("Action cancelled."));
         return new RedirectResolution(HomeActionBean.class);
     }    
     
@@ -79,6 +81,14 @@ public class HomeActionBean extends BaseActionBean {
     
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public UserRoles getUserRoles() {
+        return this.userRoles;
+    }
+    
+    public void setUserRoles(UserRoles userRoles) {
+        this.userRoles = userRoles;
     }
     
     public Integer getId() {

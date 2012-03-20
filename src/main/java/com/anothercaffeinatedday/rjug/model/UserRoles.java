@@ -57,20 +57,20 @@ public class UserRoles extends ModelBase {
         this.rolename = rolename;
     }
     
-    private enum Role {
+    public enum Roles {
         GUI("manager-gui"),
         STATUS("manager-status"),
         JMX("manager-jmx"),
         SCRIPT("manager-script");
         
-        private String rolename;
+        private String roleName;
         
-        private Role(String name) {
-            rolename = name;
+        private Roles(String name) {
+            roleName = name;
         }
         
-        public String getName() {
-            return rolename;
+        public String getRoleName() {
+            return roleName;
         }
     }
 }
