@@ -15,8 +15,8 @@ public class UserDaoImpl extends BaseDaoImpl<User,Integer>
     implements UserDao {
 
     @Override
-    public User findByUsername(String username) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public User findByUsername(String username, User user) {
+        return findBy("username",username,user);
     }
     
 }

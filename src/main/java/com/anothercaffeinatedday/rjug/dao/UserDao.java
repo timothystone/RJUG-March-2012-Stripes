@@ -23,5 +23,5 @@ import com.anothercaffeinatedday.rjug.model.User;
  * @author fdaoud
  */
 public interface UserDao extends Dao<User,Integer> {
-    public User findByUsername(String username);
+    public User findByUsername(String username, User user);
 }

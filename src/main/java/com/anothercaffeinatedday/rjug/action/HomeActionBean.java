@@ -13,22 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. * 
  */
-
 package com.anothercaffeinatedday.rjug.action;
 
-import net.sourceforge.stripes.action.DefaultHandler;
-import net.sourceforge.stripes.action.ForwardResolution;
-import net.sourceforge.stripes.action.Resolution;
-import net.sourceforge.stripes.action.UrlBinding;
+import com.anothercaffeinatedday.rjug.model.User;
+import java.util.List;
+import net.sourceforge.stripes.action.*;
+import net.sourceforge.stripes.validation.Validate;
+import net.sourceforge.stripes.validation.ValidateNestedProperties;
 
 @UrlBinding("/Home.htm")
 public class HomeActionBean extends BaseActionBean {
+
+    private User user;
 
     @DefaultHandler
     public Resolution view() {
         return new ForwardResolution("/WEB-INF/jsp/index.jsp");
     }
-    
+
     public Resolution update() {
         return new ForwardResolution("/WEB-INF/jsp/update.jsp");
     }
@@ -36,12 +38,30 @@ public class HomeActionBean extends BaseActionBean {
     public Resolution delete() {
         return new ForwardResolution("/WEB-INF/jsp/delete.jsp");
     }
+
+    public Resolution save() {
+        userDao.save(user);
+        userDao.commit();
+        getContext().getMessages().add(
+                new SimpleMessage("{0} has been saved.", user));
+        return new RedirectResolution(HomeActionBean.class);
+    }
     
-    public String getJavaVersion() {
-        return System.getProperty("java.version");
+    private User getUser() {
+        return this.user;
+    }
+    
+    private void setUser(User user) {
+        this.user = user;
     }
 
-    public String getOsName() {
-        return System.getProperty("os.name");
+    public Resolution cancel() {
+        getContext().getMessages().add(
+                new SimpleMessage("Action cancelled."));
+        return new RedirectResolution(HomeActionBean.class);
+    }
+
+    public List<User> getUsers() {
+        return userDao.read();
     }
 }

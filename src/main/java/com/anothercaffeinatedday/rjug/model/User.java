@@ -33,7 +33,7 @@ public class User extends ModelBase {
     private String password;
     private String email;
     private String phone;
-
+    
     /**
      * @return the fname
      */

@@ -56,4 +56,21 @@ public class UserRoles extends ModelBase {
     public void setRolename(String rolename) {
         this.rolename = rolename;
     }
+    
+    private enum Role {
+        GUI("manager-gui"),
+        STATUS("manager-status"),
+        JMX("manager-jmx"),
+        SCRIPT("manager-script");
+        
+        private String rolename;
+        
+        private Role(String name) {
+            rolename = name;
+        }
+        
+        public String getName() {
+            return rolename;
+        }
+    }
 }

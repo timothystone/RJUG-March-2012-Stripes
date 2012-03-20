@@ -18,8 +18,7 @@
         <init-param>
             <param-name>Extension.Packages</param-name>
             <param-value>
-                com.anothercaffeinatedday.rjug.action.extensions, 
-                com.anothercaffeinatedday.rjug.action.reload.extensions, 
+                com.anothercaffeinatedday.rjug.ext, 
                 net.sourceforge.stripes.integration.spring,
                 org.stripesstuff.stripersist
             </param-value>

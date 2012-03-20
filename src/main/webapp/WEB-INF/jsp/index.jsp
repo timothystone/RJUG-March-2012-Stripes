@@ -6,11 +6,11 @@
             var Dom = YAHOO.util.Dom,
             Event = YAHOO.util.Event,
             Tabs = YAHOO.widget.TabView,
-            SimpleDialog = YAHOO.widget.SimpleDialog;
-        
-            var crud = new Tabs("crud");
-        
+            SimpleDialog = YAHOO.widget.SimpleDialog;     
+
             Event.onDOMReady(function(e) {
+                var crud = new Tabs("crud"),
+                users = 0;    
                 var deletes = Dom.getElementsByClassName("confirm");
                 var deleteModal = new SimpleDialog("cDelete", { 
                     width: "30em", 
@@ -46,6 +46,12 @@
                     Event.preventDefault(e);
                     deleteModal.show();
                 });
+                
+                users = ${fn:length(actionBean.users)};
+                //  ${fn:length(actionBean.users)}
+                if(users > 0) {
+                    crud.selectTab(1);
+                } 
             });
         </script>
     </s:layout-component> 
@@ -61,53 +67,59 @@
                 <li><a href="#tab4"><em>Delete</em></a></li>
             </ul>
             <div class="yui-content">
-                <div>
-                    <h1>Create New User</h1>
-                    <dl>
-                        <dt>Name</dt>
-                        <dd>
-                            <input type="text" value="First">
-                        </dd>
-                        <dd>
-                            <input type="text" value="Last">
-                        </dd>
-                    </dl>
-                    <dl>
-                        <dt>Username</dt>
-                        <dd>
-                            <input type="text">
-                        </dd>
-                    </dl>
-                    <dl>
-                        <dt>Password</dt>
-                        <dd>
-                            <input type="text">
-                        </dd>
-                    </dl>
-                    <dl>
-                        <dt>e-mail</dt>
-                        <dd>
-                            <input type="text">
-                        </dd>
-                    </dl>
-                    <dl>
-                        <dt>Phone</dt>
-                        <dd>
-                            <input type="text">
-                        </dd>
-                    </dl>
-                    <dl>
-                        <dt>Role</dt>
-                        <dd>
-                            <select name="role">
-                                <option value="0">manager-script</option>
-                                <option value="1">manager-status</option>
-                                <option value="2">manager-gui</option>
-                                <option value="3">manager-jmx</option>
-                            </select>
-                        </dd>
-                    </dl>
-                </div>
+                <s:form beanclass="${actionBean['class']}">
+                    <div style="display:none"><s:hidden name="user" /></div>
+                    <div>
+                        <h1>Create New User</h1>
+                        <dl>
+                            <dt>Name</dt>
+                            <dd>
+                                <s:text name="user.fname" value="First" />
+                            </dd>
+                            <dd>
+                                <s:text name="user.lname" value="Last" />
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>Username</dt>
+                            <dd>
+                                <s:text name="user.username" />
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>Password</dt>
+                            <dd>
+                                <s:password name="user.password" />
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>e-mail</dt>
+                            <dd>
+                                <s:text name="user.email" />
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>Phone</dt>
+                            <dd>
+                                <s:text name="user.phone" />
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>Role</dt>
+                            <dd>
+                                <select name="role">
+                                    <option value="0">manager-script</option>
+                                    <option value="1">manager-status</option>
+                                    <option value="2">manager-gui</option>
+                                    <option value="3">manager-jmx</option>
+                                </select>
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt><s:submit name="save" value="Create User" /></dt>
+                        </dl>
+                    </div>
+                </s:form>
                 <div>
                     <h1>Read Users</h1>
                     <table id="users-list">
