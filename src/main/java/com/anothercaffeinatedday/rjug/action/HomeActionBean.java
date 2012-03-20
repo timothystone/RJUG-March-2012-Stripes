@@ -18,12 +18,25 @@ package com.anothercaffeinatedday.rjug.action;
 import com.anothercaffeinatedday.rjug.model.User;
 import java.util.List;
 import net.sourceforge.stripes.action.*;
+import net.sourceforge.stripes.validation.EmailTypeConverter;
+import net.sourceforge.stripes.validation.LocalizableError;
+import net.sourceforge.stripes.validation.SimpleError;
 import net.sourceforge.stripes.validation.Validate;
 import net.sourceforge.stripes.validation.ValidateNestedProperties;
+import net.sourceforge.stripes.validation.ValidationErrors;
+import net.sourceforge.stripes.validation.ValidationMethod;
 
 @UrlBinding("/Home.htm")
 public class HomeActionBean extends BaseActionBean {
 
+    @ValidateNestedProperties({
+      @Validate(field="fname", required=true, on="save", maxlength=32),
+      @Validate(field="lname", required=true, on="save", maxlength=32),
+      @Validate(field="email", required=true, on="save", converter=EmailTypeConverter.class),
+      @Validate(field="username", required=true, on="save", maxlength=16),
+      @Validate(field="password", required=true, on="save", minlength=6, maxlength=32),
+      @Validate(field="phone", maxlength=16)         
+    })
     private User user;
 
     @DefaultHandler
@@ -64,4 +77,25 @@ public class HomeActionBean extends BaseActionBean {
     public List<User> getUsers() {
         return userDao.read();
     }
+    
+    @ValidationMethod(on="save")
+    public void validateUniqueUsername(ValidationErrors errors) {
+         String username = user.getUsername();
+        if (userDao.findByUsername(username) != null) {
+            errors.add("user.username",
+              new SimpleError("{1} is already in use.", username));
+        }    
+    }
+    
+    @ValidationMethod(on="save")
+    public void validateFirstAndLastName(ValidationErrors errors) {
+        String fname = user.getFname(), lname= user.getLname();
+        if ("First Name".equals(fname)) {
+            errors.add("user.fname",
+              new SimpleError("Please enter a first, or given, name."));
+        }    
+        if ("Last Name".equals(lname)) {
+            errors.add("user.lname",
+              new SimpleError("Please enter a lastname (or surname)."));
+        }     }
 }

@@ -55,7 +55,9 @@
             });
         </script>
     </s:layout-component> 
-
+    <s:layout-component name="hd">
+        <s:errors globalErrorsOnly="true" />
+    </s:layout-component>
     <s:layout-component name="bd">
         <div id="crud" class="yui-navset">
             <p>A simple interface for managing a Tomcat JDBCRealm.</p>
@@ -74,10 +76,19 @@
                         <dl>
                             <dt>Name</dt>
                             <dd>
-                                <s:text name="user.fname" value="First" />
+                                <s:text name="user.fname" value="First Name" />
                             </dd>
                             <dd>
-                                <s:text name="user.lname" value="Last" />
+                                <s:text name="user.lname" value="Last Name" />
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dd>
+                                <s:errors field="user.fname" />
+                            </dd>
+                            <dd>
+                                <s:errors field="user.lname" />
                             </dd>
                         </dl>
                         <dl>
