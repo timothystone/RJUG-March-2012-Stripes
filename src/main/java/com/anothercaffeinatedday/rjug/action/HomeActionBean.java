@@ -16,6 +16,7 @@
 package com.anothercaffeinatedday.rjug.action;
 
 import com.anothercaffeinatedday.rjug.model.User;
+import com.anothercaffeinatedday.rjug.model.UserRoles;
 import java.util.List;
 import net.sourceforge.stripes.action.*;
 import net.sourceforge.stripes.validation.EmailTypeConverter;
@@ -54,6 +55,7 @@ public class HomeActionBean extends BaseActionBean {
 
     public Resolution save() {
         userDao.save(user);
+        
         userDao.commit();
         getContext().getMessages().add(
                 new SimpleMessage("{0} has been saved.", user));

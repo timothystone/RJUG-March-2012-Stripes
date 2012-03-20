@@ -6,8 +6,16 @@
             var Dom = YAHOO.util.Dom,
             Event = YAHOO.util.Event,
             Tabs = YAHOO.widget.TabView,
-            SimpleDialog = YAHOO.widget.SimpleDialog;     
+            SimpleDialog = YAHOO.widget.SimpleDialog,     
+            getHtmlById = function(el,id,tag) {
+                var e;
+                e = YAHOO.util.Dom.getElementBy(function(el) {
+                    return (el.id === id);
+                },tag,el);
+                return e.parentNode;
+            };
 
+    
             Event.onDOMReady(function(e) {
                 var crud = new Tabs("crud"),
                 users = 0;    
@@ -51,7 +59,7 @@
                 //  ${fn:length(actionBean.users)}
                 if(users > 0) {
                     crud.selectTab(1);
-                } 
+                }
             });
         </script>
     </s:layout-component> 
@@ -136,28 +144,25 @@
                     <table id="users-list">
                         <tr>
                             <th>Name</th>
-                            <th>Phone</th>
-                            <th>Email</th>
                             <th>Username</th>
+                            <th>Email</th>
+                            <th>Phone</th>
                             <th>Role</th>
                             <th>Actions</th>
                         </tr>
+                        <c:forEach items="${actionBean.users}" var="user">
+                            <c:set var="fullname" value="${user.fname} ${user.lname}" />
                         <tr>
-                            <td>Jon Doe</td>
-                            <td>804.255.1212</td>
-                            <td>jdoe@manager.org</td>
-                            <td>jdoe</td>
-                            <td>manager-script</td>
-                            <td><a href="update.html">Update</a> | <a href="delete.html" class="confirm" data-fullname="" data-username="">Delete</a></td>
-                        </tr>
-                        <tr>
-                            <td>Jane Doe</td>
-                            <td>804.255.1212</td>
-                            <td>janedoe@manager.org</td>
-                            <td>janedoe</td>
-                            <td>manager-gui</td>
-                            <td><a href="update.html">Update</a> | <a href="delete.html" class="confirm" data-fullname="" data-username="">Delete</a></td>
-                        </tr>
+                            <td>${fullname}</td>
+                            <td>${user.username}</td>
+                            <td>${user.email}</td>
+                            <td>${user.phone}</td>
+                            <td></td>
+                            <td><s:link event="update" beanclass="com.anothercaffeinatedday.rjug.action.HomeActionBean">
+                                    <s:param name="user.id"/>Update</s:link> | <s:link event="delete" beanclass="com.anothercaffeinatedday.rjug.action.HomeActionBean" class="confirm" data-fullname="${fullname}" data-username="${user.username}"><s:param name="user.id"/>Delete</s:link></td>
+                        </tr>                            
+                        </c:forEach>
+                        
                     </table>
                 </div>
                 <div>
@@ -165,9 +170,9 @@
                     <table id="users-update">
                         <tr>
                             <th>Name</th>
-                            <th>Phone</th>
-                            <th>Email</th>
                             <th>Username</th>
+                            <th>Email</th>
+                            <th>Phone</th>
                             <th>Role</th>
                             <th>Actions</th>
                         </tr>
