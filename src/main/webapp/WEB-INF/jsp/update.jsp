@@ -19,8 +19,7 @@
 <s:layout-render name="/WEB-INF/jsp/layout.jsp" title="Tomcat Manager Management">
     <s:layout-component name="bd">
             <div id="updatePanel">
-                <s:form beanclass="${actionBean['class']}">
-                    <div><s:hidden name="user" /></div>
+                <s:form id="updateForm" beanclass="com.anothercaffeinatedday.rjug.action.HomeActionBean">
                     <div class="hd">
                         <h1>Update ${actionBean.user.fname} ${actionBean.user.lname}</h1>
                     </div>
@@ -43,19 +42,19 @@
                         <dl>
                             <dt>Password</dt>
                             <dd>
-                                <s:password name="user.password" value="${actionBean.user.password}"/>
+                                <s:password repopulate="true" name="user.password" />
                             </dd>
                         </dl>
                         <dl>
                             <dt>e-mail</dt>
                             <dd>
-                                <s:text name="user.email" value="${actionBean.user.email}"/>
+                                <s:text name="user.email"/>
                             </dd>
                         </dl>
                         <dl>
                             <dt>Phone</dt>
                             <dd>
-                                <s:text name="user.phone" value="${actionBean.user.phone}"/>
+                                <s:text name="user.phone"/>
                             </dd>
                         </dl>
                         <dl>
@@ -69,9 +68,6 @@
                                 </select>
                             </dd>
                         </dl>
-                    </div>
-                    <div class="ft">
-                        <s:submit name="save" value="Update User" />                    
                     </div>
                 </s:form>
             </div>

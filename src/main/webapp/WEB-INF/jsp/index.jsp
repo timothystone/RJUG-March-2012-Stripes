@@ -6,10 +6,11 @@
             var Dom = YAHOO.util.Dom,
             Event = YAHOO.util.Event,
             Tabs = YAHOO.widget.TabView,
-            SimpleDialog = YAHOO.widget.SimpleDialog,     
+            SimpleDialog = YAHOO.widget.SimpleDialog,
+            Connect = YAHOO.util.Connect,
             getHtmlById = function(el,id,tag) {
                 var e;
-                e = YAHOO.util.Dom.getElementBy(function(el) {
+                e = Dom.getElementBy(function(el) {
                     return (el.id === id);
                 },tag,el);
                 return e.parentNode;
@@ -20,6 +21,7 @@
                 var crud = new Tabs("crud"),
                 users = 0;    
                 var deletes = Dom.getElementsByClassName("confirm");
+                var updates = Dom.getElementsByClassName("update");
                 var deleteModal = new SimpleDialog("cDelete", { 
                     width: "30em", 
                     fixedcenter: true,
@@ -49,10 +51,56 @@
             
                 deleteModal.cfg.queueProperty("buttons", deleteButtons); 
                 deleteModal.render(document.body);            
-
+            
+                var updateYes = function() {
+                    //user confirms the deletion of this item;
+                    //this method would perform that deletion;
+                    this.hide();
+                };
+                var updateNo = function() {
+                    //user cancels item deletion; this method
+                    //would handle the cancellation of the
+                    //process.
+                    this.hide();
+                };
+                
+                var updateButtons = [
+                    { text: "Update User", handler: updateYes },
+                    { text:"Cancel", handler: updateNo, isDefault:true}
+                ];
+            
+                
                 Event.on(deletes, "click", function(e) {
                     Event.preventDefault(e);
                     deleteModal.show();
+                });
+                
+                var loadpanel = {
+                    cache: false,
+                    success: function(o) {
+                        var tempDiv = document.createElement("div");
+                        tempDiv.innerHTML = o.responseText;
+                        var updateDialog = new YAHOO.widget.Dialog(getHtmlById(tempDiv,"updateForm","form"),{
+                            width: "40em", 
+                            fixedcenter: true,
+                            modal: true,
+                            visible: false,
+                            draggable: false,
+                            underlay: "none"
+                            
+                        });
+                        updateDialog.cfg.queueProperty("buttons", updateButtons); 
+                        updateDialog.render(document.body);
+                        updateDialog.show();
+                    },
+                    failure: function(o) {
+                        alert("failed to make connection");
+                    }
+                };
+                
+                Event.on(updates, "click", function(e) {
+                    Event.preventDefault(e);
+                    var xhr = Connect.asyncRequest('GET',this.href,loadpanel);
                 });
                 
                 users = ${fn:length(actionBean.users)};
@@ -78,7 +126,6 @@
             </ul>
             <div class="yui-content">
                 <s:form beanclass="${actionBean['class']}">
-                    <div><s:hidden name="user" /></div>
                     <div>
                         <h1>Create New User</h1>
                         <dl>
@@ -91,15 +138,15 @@
                             </dd>
                         </dl>
                         <c:if test="${s:hasErrors(actionBean,'user.fname') or s:hasErrors(actionBean,'user.lname')}">
-                        <dl>
-                            <dt>&nbsp;</dt>
-                            <dd>
-                                <s:errors field="user.fname" />
-                            </dd>
-                            <dd>
-                                <s:errors field="user.lname" />
-                            </dd>
-                        </dl>
+                            <dl>
+                                <dt>&nbsp;</dt>
+                                <dd>
+                                    <s:errors field="user.fname" />
+                                </dd>
+                                <dd>
+                                    <s:errors field="user.lname" />
+                                </dd>
+                            </dl>
                         </c:if>
                         <dl>
                             <dt>Username</dt>
@@ -108,12 +155,12 @@
                             </dd>
                         </dl>
                         <c:if test="${s:hasErrors(actionBean,'user.username')}">
-                        <dl>
-                            <dt>&nbsp;</dt>
-                            <dd>
-                                <s:errors field="user.username" />
-                            </dd>
-                        </dl>
+                            <dl>
+                                <dt>&nbsp;</dt>
+                                <dd>
+                                    <s:errors field="user.username" />
+                                </dd>
+                            </dl>
                         </c:if>
                         <dl>
                             <dt>Password</dt>
@@ -122,12 +169,12 @@
                             </dd>
                         </dl>
                         <c:if test="${s:hasErrors(actionBean,'user.password')}">
-                        <dl>
-                            <dt>&nbsp;</dt>
-                            <dd>
-                                <s:errors field="user.password" />
-                            </dd>
-                        </dl>
+                            <dl>
+                                <dt>&nbsp;</dt>
+                                <dd>
+                                    <s:errors field="user.password" />
+                                </dd>
+                            </dl>
                         </c:if>
                         <dl>
                             <dt>e-mail</dt>
@@ -136,12 +183,12 @@
                             </dd>
                         </dl>
                         <c:if test="${s:hasErrors(actionBean,'user.email')}">
-                        <dl>
-                            <dt>&nbsp;</dt>
-                            <dd>
-                                <s:errors field="user.email" />
-                            </dd>
-                        </dl>
+                            <dl>
+                                <dt>&nbsp;</dt>
+                                <dd>
+                                    <s:errors field="user.email" />
+                                </dd>
+                            </dl>
                         </c:if>
                         <dl>
                             <dt>Phone</dt>
@@ -178,17 +225,17 @@
                         </tr>
                         <c:forEach items="${actionBean.users}" var="user">
                             <c:set var="fullname" value="${user.fname} ${user.lname}" />
-                        <tr>
-                            <td>${fullname}</td>
-                            <td>${user.username}</td>
-                            <td>${user.email}</td>
-                            <td>${user.phone}</td>
-                            <td></td>
-                            <td><s:link event="update" beanclass="com.anothercaffeinatedday.rjug.action.HomeActionBean">
-                                    <s:param name="id" value="${user.id}"/>Update</s:link> | <s:link event="delete" beanclass="com.anothercaffeinatedday.rjug.action.HomeActionBean" class="confirm" data-fullname="${fullname}" data-username="${user.username}"><s:param name="user.id"/>Delete</s:link></td>
-                        </tr>                            
+                            <tr>
+                                <td>${fullname}</td><!-- name -->
+                                <td>${user.username}</td><!-- username -->
+                                <td>${user.email}</td><!-- email -->
+                                <td>${user.phone}</td><!-- phone -->
+                                <td></td><!-- role -->
+                                <td><s:link event="update" beanclass="com.anothercaffeinatedday.rjug.action.HomeActionBean" class="update">
+                                        <s:param name="id" value="${user.id}"/>Update</s:link> | <s:link event="delete" beanclass="com.anothercaffeinatedday.rjug.action.HomeActionBean" class="confirm" data-fullname="${fullname}" data-username="${user.username}"><s:param name="user.id" value="${user.id}"/>Delete</s:link></td>
+                                </tr>                            
                         </c:forEach>
-                        
+
                     </table>
                 </div>
                 <div>
@@ -208,49 +255,51 @@
                             <td>jdoe@manager.org</td>
                             <td>jdoe</td>
                             <td>manager-script</td>
-                            <td><a href="update.html">Update</a></td>
-                        </tr>
-                        <tr>
-                            <td>Jane Doe</td>
-                            <td>804.255.1212</td>
-                            <td>janedoe@manager.org</td>
-                            <td>janedoe</td>
-                            <td>manager-gui</td>
-                            <td><a href="update.html">Update</a></td>
-                        </tr>
-                    </table>
-                </div>
-                <div>
-                    <h1>Delete Users</h1>
-                    <table id="users-delete">
-                        <tr>
-                            <th>Name</th>
-                            <th>Phone</th>
-                            <th>Email</th>
-                            <th>Username</th>
-                            <th>Role</th>
-                            <th>Actions</th>
-                        </tr>
-                        <tr>
-                            <td>Jon Doe</td>
-                            <td>804.255.1212</td>
-                            <td>jdoe@manager.org</td>
-                            <td>jdoe</td>
-                            <td>manager-script</td>
-                            <td><a href="delete.html" class="confirm" data-fullname="" data-username="">Delete</a></td>
-                        </tr>
-                        <tr>
-                            <td>Jane Doe</td>
-                            <td>804.255.1212</td>
-                            <td>janedoe@manager.org</td>
-                            <td>janedoe</td>
-                            <td>manager-gui</td>
-                            <td><a href="delete.html" class="confirm" data-fullname="" data-username="">Delete</a></td>
-                        </tr>
-                    </table>
+                            <td><s:link event="update" beanclass="com.anothercaffeinatedday.rjug.action.HomeActionBean" class="update">
+                                    <s:param name="id" value="${user.id}"/>Update</s:link></td>
+                            </tr>
+                            <tr>
+                                <td>Jane Doe</td>
+                                <td>804.255.1212</td>
+                                <td>janedoe@manager.org</td>
+                                <td>janedoe</td>
+                                <td>manager-gui</td>
+                                <td><s:link event="update" beanclass="com.anothercaffeinatedday.rjug.action.HomeActionBean" class="update">
+                                    <s:param name="id" value="${user.id}"/>Update</s:link></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div>
+                        <h1>Delete Users</h1>
+                        <table id="users-delete">
+                            <tr>
+                                <th>Name</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>Username</th>
+                                <th>Role</th>
+                                <th>Actions</th>
+                            </tr>
+                            <tr>
+                                <td>Jon Doe</td>
+                                <td>804.255.1212</td>
+                                <td>jdoe@manager.org</td>
+                                <td>jdoe</td>
+                                <td>manager-script</td>
+                                <td><s:link event="delete" beanclass="com.anothercaffeinatedday.rjug.action.HomeActionBean" class="confirm" data-fullname="${fullname}" data-username="${user.username}"><s:param name="user.id" value="${user.id}"/>Delete</s:link></td>
+                            </tr>
+                            <tr>
+                                <td>Jane Doe</td>
+                                <td>804.255.1212</td>
+                                <td>janedoe@manager.org</td>
+                                <td>janedoe</td>
+                                <td>manager-gui</td>
+                                <td><s:link event="delete" beanclass="com.anothercaffeinatedday.rjug.action.HomeActionBean" class="confirm" data-fullname="${fullname}" data-username="${user.username}"><s:param name="user.id" value="${user.id}"/>Delete</s:link></td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
     </s:layout-component>
 </s:layout-render>
 

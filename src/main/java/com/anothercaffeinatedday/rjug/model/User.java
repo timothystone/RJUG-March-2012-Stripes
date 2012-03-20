@@ -36,7 +36,7 @@ public class User extends ModelBase {
     private String username;
     @Column(name="password", nullable=false, length=32)
     private String password;
-    @Column(name="email", nullable=false, length=64)
+    @Column(name="email", nullable=true, length=64)
     private String email;
     @Column(name="phone", nullable=true, length=16)
     private String phone;
@@ -122,7 +122,7 @@ public class User extends ModelBase {
      * @param phone the phone to set
      */
     public void setPhone(String phone) {
-        this.email = phone;
+        this.phone = phone;
     }
 
     @Override
