@@ -8,7 +8,7 @@
       <!-- Autodetect entity classes -->
       <property name="hibernate.archive.autodetection" value="class"/>
       <!-- Automatically create the SQL schema -->
-<!--      <property name="hibernate.hbm2ddl.auto" value="create"/>-->
+      <property name="hibernate.hbm2ddl.auto" value="create"/>
 <!--      <property name="hibernate.hbm2ddl.auto" value="validate"/>-->
       <!-- Tell Hibernate to use PostgreSQL -->
       <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
