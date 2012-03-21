@@ -16,7 +16,6 @@
 package com.anothercaffeinatedday.rjug.model;
 
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 
 /**
  *
@@ -55,22 +54,5 @@ public class UserRoles extends ModelBase {
      */
     public void setRolename(String rolename) {
         this.rolename = rolename;
-    }
-    
-    public enum Roles {
-        GUI("manager-gui"),
-        STATUS("manager-status"),
-        JMX("manager-jmx"),
-        SCRIPT("manager-script");
-        
-        private String roleName;
-        
-        private Roles(String name) {
-            roleName = name;
-        }
-        
-        public String getRoleName() {
-            return roleName;
-        }
-    }
+    } 
 }

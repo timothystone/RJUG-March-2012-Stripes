@@ -15,6 +15,7 @@
  */
 package com.anothercaffeinatedday.rjug.action;
 
+import com.anothercaffeinatedday.rjug.model.Roles;
 import com.anothercaffeinatedday.rjug.model.User;
 import com.anothercaffeinatedday.rjug.model.UserRoles;
 import java.util.List;
@@ -40,9 +41,10 @@ public class HomeActionBean extends BaseActionBean {
     })
     private User user;
     private UserRoles userRoles;
-    private Integer id;
+    private Integer uid, rid;
 
     @DefaultHandler
+    @DontValidate
     public Resolution view() {
         return new ForwardResolution("/WEB-INF/jsp/index.jsp");
     }
@@ -57,12 +59,12 @@ public class HomeActionBean extends BaseActionBean {
 
     public Resolution save() {
         System.out.println("saving...");
-        userRoles = getUserRoles();
-        userRoles.setUsername(user.getUsername());
-        userRoles.setRolename(remap(userRoles.getRolename()));
+        //userRoles = getUserRoles();
         userDao.save(user);
-        userRolesDao.save(userRoles);
         userDao.commit();
+        userRoles.setUsername(user.getUsername());
+        userRoles.setRolename(userRoles.getRolename());
+        userRolesDao.save(userRoles);
         userRolesDao.commit();
         getContext().getMessages().add(
                 new SimpleMessage("{0} has been saved.", user));
@@ -75,8 +77,8 @@ public class HomeActionBean extends BaseActionBean {
     }
 
     public User getUser() {
-        if (id != null) {
-            return userDao.read(id);
+        if (uid != null) {
+            return userDao.read(uid);
         }
         return this.user;
     }
@@ -86,6 +88,9 @@ public class HomeActionBean extends BaseActionBean {
     }
 
     public UserRoles getUserRoles() {
+        if (rid != null) {
+            return userRolesDao.read(rid);
+        }
         return this.userRoles;
     }
 
@@ -93,30 +98,40 @@ public class HomeActionBean extends BaseActionBean {
         this.userRoles = userRoles;
     }
 
-    public Integer getId() {
-        return this.id;
+    /**
+     * @return the uid
+     */
+    public Integer getUid() {
+        return uid;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    /**
+     * @param uid the uid to set
+     */
+    public void setUid(Integer uid) {
+        this.uid = uid;
     }
 
+    /**
+     * @return the rid
+     */
+    public Integer getRid() {
+        return rid;
+    }
+
+    /**
+     * @param rid the rid to set
+     */
+    public void setRid(Integer rid) {
+        this.rid = rid;
+    }
+    
     public List<User> getUsers() {
         return userDao.read();
     }
 
-    private String remap(String s) {
-        if ("GUI".equals(s)) {
-            return "manager-gui";
-        } else if ("JMX".equals(s)) {
-            return "manager-jmx";
-        } else if ("SCRIPT".equals(s)) {
-            return "manager-script";
-        } else if ("STATUS".equals(s)) {
-            return "manager-status";
-        } else {
-            return s;
-        }
+    public String[] getRoles() {
+        return Roles.ROLES;
     }
 
     @ValidationMethod(on = "save")

@@ -210,7 +210,9 @@
                             <dt>Role</dt>
                             <dd>
                                 <s:select name="userRoles.rolename">
-                                    <s:options-enumeration enum="com.anothercaffeinatedday.rjug.model.UserRoles.Roles" label="roleName" />
+                                    <c:forEach items="${actionBean.roles}" var="role">
+                                        <s:option value="${role}" label="${role}" />
+                                    </c:forEach>
                                 </s:select>
                             </dd>
                         </dl>
@@ -237,9 +239,15 @@
                                 <td>${user.username}</td>
                                 <td>${user.email}</td>
                                 <td>${user.phone}</td>
-                                <td>${userRoles.rolename}</td>
+                                <td>manager-gui</td>
                                 <td><s:link event="update" beanclass="com.anothercaffeinatedday.rjug.action.HomeActionBean" class="update">
-                                        <s:param name="id" value="${user.id}"/>Update</s:link> | <s:link event="delete" beanclass="com.anothercaffeinatedday.rjug.action.HomeActionBean" class="confirm"><s:param name="id" value="${user.id}"/>Delete</s:link></td>
+                                        <s:param name="uid" value="${user.id}"/>
+                                        <s:param name="rid" value="${user.id}"/>
+                                        Update</s:link> | 
+                                    <s:link event="delete" beanclass="com.anothercaffeinatedday.rjug.action.HomeActionBean" class="confirm">
+                                        <s:param name="uid" value="${user.id}"/>
+                                        <s:param name="rid" value="${user.id}"/>
+                                        Delete</s:link></td>
                                 </tr>                            
                         </c:forEach>
 
@@ -258,14 +266,17 @@
                         </tr>
                         <c:forEach items="${actionBean.users}" var="user">
                             <c:set var="fullname" value="${user.fname} ${user.lname}" />
+                            <c:set var="userRoles" value="${actionBean.userRoles}"/>
                             <tr>
                                 <td>${fullname}</td>
                                 <td>${user.username}</td>
                                 <td>${user.email}</td>
                                 <td>${user.phone}</td>
-                                <td></td>
+                                <td>manager-gui</td>
                                 <td><s:link event="update" beanclass="com.anothercaffeinatedday.rjug.action.HomeActionBean" class="update">
-                                        <s:param name="id" value="${user.id}"/>Update</s:link></td>
+                                        <s:param name="uid" value="${user.id}"/>
+                                        <s:param name="rid" value="${user.id}"/>
+                                        Update</s:link></td>
                                 </tr>                            
                         </c:forEach>
                     </table>
@@ -275,21 +286,24 @@
                     <table id="users-delete">
                         <tr>
                             <th>Name</th>
-                            <th>Phone</th>
-                            <th>Email</th>
                             <th>Username</th>
+                            <th>Email</th>
+                            <th>Phone</th>
                             <th>Role</th>
                             <th>Actions</th>
                         </tr>
                         <c:forEach items="${actionBean.users}" var="user">
                             <c:set var="fullname" value="${user.fname} ${user.lname}" />
+                            <c:set var="userRoles" value="${actionBean.userRoles}"/>
                             <tr>
                                 <td>${fullname}</td>
                                 <td>${user.username}</td>
                                 <td>${user.email}</td>
                                 <td>${user.phone}</td>
-                                <td></td>
-                                <td><s:link event="delete" beanclass="com.anothercaffeinatedday.rjug.action.HomeActionBean" class="delete"><s:param name="id" value="${user.id}"/>Delete</s:link></td>
+                                <td>manager-gui</td>
+                                <td><s:link event="delete" beanclass="com.anothercaffeinatedday.rjug.action.HomeActionBean" class="delete">
+                                        <s:param name="uid" value="${user.id}"/>
+                                        <s:param name="rid" value="${user.id}"/>Delete</s:link></td>
                                 </tr>                            
                         </c:forEach>
                     </table>

@@ -60,12 +60,12 @@
                     <dl>
                         <dt>Role</dt>
                         <dd>
-                            <select name="role">
-                                <option value="0">manager-script</option>
-                                <option value="1">manager-status</option>
-                                <option value="2">manager-gui</option>
-                                <option value="3">manager-jmx</option>
-                            </select>
+                            <s:select name="userRoles.rolename">
+                            <c:forEach items="${actionBean.roles}" var="role">
+                                <c:set var="selected" value="${(actionBean.userRoles.rolename eq role) ? 'selected' : ''}" />
+                                <option value="${role}" ${selected}>${role}</option>
+                            </c:forEach>
+                            </s:select>
                         </dd>
                     </dl>
                 </div>

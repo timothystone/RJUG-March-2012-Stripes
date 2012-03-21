@@ -45,7 +45,7 @@
                     <dl>
                         <dt>Role</dt>
                         <dd>
-                            [role]
+                            ${actionBean.userRoles.rolename}
                         </dd>
                     </dl>
                 </div>
