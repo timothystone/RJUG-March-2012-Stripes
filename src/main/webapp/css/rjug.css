@@ -43,6 +43,8 @@ div.yui-panel .hd h1 { margin: 0; }
 	margin: 0 1em 1em;
 }
 
+.yui-panel form div.ft { display:none }
+
 dl dt,dl dd {
 	display: inline-block;
 	width: 12em;
@@ -54,7 +56,7 @@ dl dt {
 
 dd input[type="text"] {
 	width: 12em;
-	color: #ccc;
+	color: #333;
 }
 
 #ft {

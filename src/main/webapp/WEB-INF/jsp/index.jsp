@@ -217,7 +217,7 @@
                             </dd>
                         </dl>
                         <dl>
-                            <dt><s:submit name="save" value="Create User" /></dt>
+                            <dt><s:submit name="save" value="Create User" class="" /></dt>
                         </dl>
                     </div>
                 </s:form>
@@ -311,5 +311,6 @@
             </div>
         </div>
     </s:layout-component>
+    <s:layout-component name="ft">Hello, RJUG</s:layout-component>
 </s:layout-render>
 
