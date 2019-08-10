@@ -113,11 +113,13 @@
               var xhr = Connect.asyncRequest('GET', this.href, updatepanel);
           });
 
-          users = ${fn:length(actionBean.users)};
+          users = ${fn:length(actionBean["users"])};
           //  ${fn:length(actionBean.users)}
           if (users > 0) {
               crud.selectTab(1);
           }
+
+          console.log(document.cookie);
       });
     </script>
   </s:layout-component>
