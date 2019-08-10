@@ -15,26 +15,32 @@
  */
 package com.anothercaffeinatedday.rjug.model;
 
-import java.io.Serializable;
-import java.util.Set;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
  *
  * @author tstone
  */
-@Entity
-public class User extends ModelBase implements Serializable {
 
+@Entity
+@Table(name="\"user\"")
+public class User extends ModelBase {
+
+    @Column(name="fname", nullable=false, length=32)
     private String fname;
+    @Column(name="lname", nullable=false, length=32)
     private String lname;
+    @Column(name="username", nullable=false, length=16)
     private String username;
+    @Column(name="password", nullable=false, length=32)
     private String password;
+    @Column(name="email", nullable=true, length=64)
     private String email;
+    @Column(name="phone", nullable=true, length=16)
     private String phone;
     
-    private Set roles;
-
     /**
      * @return the fname
      */
@@ -116,25 +122,11 @@ public class User extends ModelBase implements Serializable {
      * @param phone the phone to set
      */
     public void setPhone(String phone) {
-        this.email = phone;
+        this.phone = phone;
     }
 
     @Override
     public String toString() {
         return String.format("%s %s", fname, lname);
-    }
-
-    /**
-     * @return the roles
-     */
-    public Set getRoles() {
-        return roles;
-    }
-
-    /**
-     * @param roles the roles to set
-     */
-    public void setRoles(Set roles) {
-        this.roles = roles;
     }
 }

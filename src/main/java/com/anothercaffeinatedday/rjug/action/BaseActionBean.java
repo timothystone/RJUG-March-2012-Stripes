@@ -16,16 +16,28 @@
 
 package com.anothercaffeinatedday.rjug.action;
 
+import com.anothercaffeinatedday.rjug.ext.RjugActionBeanContext;
+import com.anothercaffeinatedday.rjug.dao.UserDao;
+import com.anothercaffeinatedday.rjug.dao.UserRolesDao;
+import com.anothercaffeinatedday.rjug.dao.impl.stripersist.UserDaoImpl;
+import com.anothercaffeinatedday.rjug.dao.impl.stripersist.UserRolesDaoImpl;
+import com.anothercaffeinatedday.rjug.model.User;
 import net.sourceforge.stripes.action.ActionBean;
 import net.sourceforge.stripes.action.ActionBeanContext;
 
-public class BaseActionBean implements ActionBean {
-    private ActionBeanContext context;
+public abstract class BaseActionBean implements ActionBean {
+    private RjugActionBeanContext context;
 
-    public ActionBeanContext getContext() {
+    @Override
+    public RjugActionBeanContext getContext() {
         return context;
     }
+    
+    @Override
     public void setContext(ActionBeanContext context) {
-        this.context = context;
+        this.context = (RjugActionBeanContext) context;
     }
+    
+    protected UserDao userDao = new UserDaoImpl();
+    protected UserRolesDao userRolesDao = new UserRolesDaoImpl();
 }

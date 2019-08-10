@@ -13,16 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. * 
  */
-package com.anothercaffeinatedday.rjug.model;
+package com.anothercaffeinatedday.rjug.dao;
+
+import java.io.Serializable;
+import java.util.List;
 
 /**
  *
  * @author tstone
+ * @author fdaoud
  */
-public class UsersRoles {
-    
-    private String username;
-    private String rolename;
-    
-    
+public interface Dao<T,ID extends Serializable> {
+    public List<T> read();
+    public T read(ID id);
+    public void save(T t);
+    public void delete(T t);
+    public void commit();
 }

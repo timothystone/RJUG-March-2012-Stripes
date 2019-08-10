@@ -18,43 +18,43 @@
 
 <s:layout-render name="/WEB-INF/jsp/layout.jsp" title="Tomcat Manager Management">
     <s:layout-component name="bd">
-         <div id="deletePanel">
-                <form>
-                    <input type="hidden" name="contact.id">
-                    <div class="hd">
-                        <h1>Delete [Full Name]</h1>
-                    </div>
-                    <div class="bd">
-                        <dl>
-                            <dt>Username</dt>
-                            <dd>
-                                [username]
-                            </dd>
-                        </dl>
-                        <dl>
-                            <dt>e-mail</dt>
-                            <dd>
-                                [email]
-                            </dd>
-                        </dl>
-                        <dl>
-                            <dt>Phone</dt>
-                            <dd>
-                                [phone]
-                            </dd>
-                        </dl>
-                        <dl>
-                            <dt>Role</dt>
-                            <dd>
-                                [role]
-                            </dd>
-                        </dl>
-                    </div>
-                    <div class="ft">
-                        <input type="submit">                    
-                    </div>
-                </form>
-            </div>
+        <div id="deletePanel">
+            <s:form id="deleteForm" beanclass="com.anothercaffeinatedday.rjug.action.HomeActionBean">
+                <div class="hd">
+                    <h1>Delete ${actionBean.user.fname} ${actionBean.user.lname}</h1>
+                </div>
+                <div class="bd">
+                    <dl>
+                        <dt>Username</dt>
+                        <dd>
+                            ${actionBean.user.username}
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>e-mail</dt>
+                        <dd>
+                            ${actionBean.user.email}
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>Phone</dt>
+                        <dd>
+                            ${actionBean.user.phone}
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>Role</dt>
+                        <dd>
+                            ${actionBean.userRoles.rolename}
+                        </dd>
+                    </dl>
+                </div>
+                <div class="ft">
+                    <s:submit name="save" value="Delete User"/>                    
+                    <s:submit name="cancel" value="Cancel"/>                    
+                </div>
+            </s:form>
+        </div>
     </s:layout-component>            
 </s:layout-render>
 

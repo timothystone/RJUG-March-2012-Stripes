@@ -35,6 +35,7 @@
             <script type="text/javascript" src="${contextPath}/js/button-min.js"></script>
             <script type="text/javascript" src="${contextPath}/js/container-min.js"></script>
             <script type="text/javascript" src="${contextPath}/js/tabview-min.js"></script>
+            <script type="text/javascript" src="${contextPath}/js/connection-min.js"></script>
             <s:layout-component name="head" />
         </head>
         <body class="yui-skin-sam">

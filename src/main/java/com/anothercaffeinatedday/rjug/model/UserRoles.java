@@ -15,27 +15,31 @@
  */
 package com.anothercaffeinatedday.rjug.model;
 
+import javax.persistence.Entity;
+
 /**
  *
  * @author tstone
  */
-public class Role {
 
-    private Integer id;
+@Entity
+public class UserRoles extends ModelBase {
+    
+    private String username;
     private String rolename;
 
     /**
-     * @return the id
+     * @return the username
      */
-    public Integer getId() {
-        return id;
+    public String getUsername() {
+        return username;
     }
 
     /**
-     * @param id the id to set
+     * @param username the username to set
      */
-    public void setId(Integer id) {
-        this.id = id;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     /**
@@ -50,28 +54,5 @@ public class Role {
      */
     public void setRolename(String rolename) {
         this.rolename = rolename;
-    }
-
-    public enum Roles {
-        GUI("manager-gui", 0),
-        Script("manager-script", 1),
-        Status("manager-status", 2),
-        JMX("manager-jmx", 3);
-        
-        private String rolename;
-        private Integer id;
-
-        Roles(String rolename, Integer id) {
-            this.rolename = rolename;
-            this.id = id;
-        }
-        
-        public String getRolename() {
-            return rolename;
-        }
-        
-        public Integer getId() {
-            return id;
-        }
-    };
+    } 
 }
